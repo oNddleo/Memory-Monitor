@@ -1,0 +1,41 @@
+[Unit]
+Description=Memory Monitor Service - Kill processes exceeding RAM threshold
+Documentation=man:systemd.special(7)
+After=multi-user.target
+Wants=multi-user.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/memory-monitor
+
+# Service configuration
+ExecStart=/usr/bin/python3 /opt/memory-monitor/memory_monitor.py
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+RestartSec=10
+
+# Security settings
+PrivateTmp=yes
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log
+
+# Resource limits
+CPUQuota=10%
+MemoryLimit=100M
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=memory-monitor
+
+# Environment variables (optional)
+Environment="PYTHONUNBUFFERED=1"
+Environment="LOG_LEVEL=INFO"
+
+[Install]
+WantedBy=multi-user.target

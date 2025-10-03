@@ -1,0 +1,44 @@
+# Memory Monitor Configuration File
+# Edit these values to customize monitoring behavior
+
+[thresholds]
+# Kill if process uses more than this percentage of total RAM
+ram_percent_threshold = 60.0
+
+# Kill if process uses more than this amount of RAM in GB
+ram_gb_threshold = 20
+
+# Check interval in seconds
+check_interval = 30
+
+[whitelist]
+# Never kill these PIDs
+pids = [1]
+
+# Never kill processes with these names (case-insensitive substring match)
+names = [
+    "systemd",
+    "kernel",
+    "init",
+    "sshd",
+    "systemd-journald",
+    "systemd-networkd",
+    "systemd-resolved",
+    "NetworkManager",
+    "docker",
+    "containerd",
+    "kubelet",
+]
+
+# Optional: protect processes owned by these users
+users = ["root"]
+
+[settings]
+# Set to true to test without actually killing processes
+dry_run = false
+
+# Log file path
+log_file = "/var/log/memory_monitor.log"
+
+# Enable syslog integration
+enable_syslog = true
